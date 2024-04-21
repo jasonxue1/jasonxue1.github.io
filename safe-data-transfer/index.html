@@ -13,6 +13,9 @@
     <label for="inputText">输入文本:</label>
     <input type="text" id="inputText"><br><br>
 
+    <label for="encryptionKey">密钥:</label>
+    <input type="text" id="encryptionKey"><br><br>
+
     <button onclick="encryptText()">加密</button>
     <button onclick="decryptText()">解密</button><br><br>
 
@@ -23,20 +26,34 @@
     <textarea id="decryptedText" rows="4" cols="50"></textarea>
 
     <script>
-        // AES 加密密钥，16 字符长度 (128 位)
-        var key = CryptoJS.enc.Utf8.parse('1234567890123456'); // 这里使用自定义密钥，请按需修改
-
         function encryptText() {
             var plaintext = document.getElementById('inputText').value;
-            var encrypted = CryptoJS.AES.encrypt(plaintext, key, { mode: CryptoJS.mode.ECB }).toString();
+            var key = document.getElementById('encryptionKey').value;
+            
+            if (!key || key.length < 16) {
+                alert('请输入至少16位的密钥！');
+                return;
+            }
+            
+            var encrypted = CryptoJS.AES.encrypt(plaintext, key).toString();
             document.getElementById('encryptedText').value = encrypted;
         }
 
         function decryptText() {
             var encryptedText = document.getElementById('encryptedText').value;
-            var decrypted = CryptoJS.AES.decrypt(encryptedText, key, { mode: CryptoJS.mode.ECB });
-            var plaintext = decrypted.toString(CryptoJS.enc.Utf8);
-            document.getElementById('decryptedText').value = plaintext;
+            var key = document.getElementById('encryptionKey').value;
+
+            if (!key || key.length < 16) {
+                alert('请输入至少16位的密钥！');
+                return;
+            }
+
+            try {
+                var decrypted = CryptoJS.AES.decrypt(encryptedText, key).toString(CryptoJS.enc.Utf8);
+                document.getElementById('decryptedText').value = decrypted;
+            } catch (error) {
+                alert('解密失败，请检查密文和密钥是否匹配！');
+            }
         }
     </script>
 </body>
