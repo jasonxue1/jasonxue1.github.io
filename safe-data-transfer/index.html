@@ -2,85 +2,41 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>双重 AES 加密与解密示例</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AES 加密与解密</title>
+    <!-- 引入 CryptoJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 </head>
 <body>
-    <h2>双重 AES 加密与解密示例</h2>
+    <h1>AES 加密与解密</h1>
 
-    <textarea id="inputText" placeholder="输入要加密的文本"></textarea><br>
-    <input type="text" id="userKey" placeholder="输入用户密钥"><br>
+    <label for="inputText">输入文本:</label>
+    <input type="text" id="inputText"><br><br>
+
     <button onclick="encryptText()">加密</button>
-    <br><br>
-    <textarea id="encryptedText" placeholder="加密后的文本" readonly></textarea><br><br>
-    <button onclick="decryptText()">解密</button>
-    <br><br>
-    <textarea id="decryptedText" placeholder="解密后的文本" readonly></textarea>
+    <button onclick="decryptText()">解密</button><br><br>
+
+    <p>加密结果:</p>
+    <textarea id="encryptedText" rows="4" cols="50"></textarea><br><br>
+
+    <p>解密结果:</p>
+    <textarea id="decryptedText" rows="4" cols="50"></textarea>
 
     <script>
-        // 预设的密钥，可以自定义
-        const presetKey = Uint8Array.from([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]);
+        // AES 加密密钥，16 字符长度 (128 位)
+        var key = CryptoJS.enc.Utf8.parse('1234567890123456'); // 这里使用自定义密钥，请按需修改
 
-        // AES 加密函数
-        async function encryptText() {
-            const inputText = document.getElementById('inputText').value;
-            const userKey = document.getElementById('userKey').value;
-
-            try {
-                // 第一次加密，使用用户输入的密钥
-                const userKeyArray = new TextEncoder().encode(userKey);
-                const encryptedUserKey = await window.crypto.subtle.encrypt(
-                    { name: 'AES-CBC', iv: presetKey.slice(0, 16) }, 
-                    userKeyArray, 
-                    userKeyArray
-                );
-
-                // 第二次加密，使用预设的密钥
-                const presetKeyArray = presetKey;
-                const textEncoder = new TextEncoder();
-                const data = textEncoder.encode(inputText);
-                const encryptedData = await window.crypto.subtle.encrypt(
-                    { name: 'AES-CBC', iv: presetKeyArray.slice(0, 16) }, 
-                    presetKeyArray, 
-                    data
-                );
-
-                // 将加密后的结果显示在文本框中
-                const encryptedArray = new Uint8Array(encryptedData);
-                const encryptedText = btoa(String.fromCharCode(...encryptedArray));
-                document.getElementById('encryptedText').value = encryptedText;
-            } catch (error) {
-                console.error('加密失败:', error);
-            }
+        function encryptText() {
+            var plaintext = document.getElementById('inputText').value;
+            var encrypted = CryptoJS.AES.encrypt(plaintext, key, { mode: CryptoJS.mode.ECB }).toString();
+            document.getElementById('encryptedText').value = encrypted;
         }
 
-        // AES 解密函数
-        async function decryptText() {
-            const encryptedText = document.getElementById('encryptedText').value;
-            const userKey = document.getElementById('userKey').value;
-
-            try {
-                // 使用预设的密钥解密
-                const encryptedArray = new Uint8Array(atob(encryptedText).split('').map(char => char.charCodeAt(0)));
-                const decryptedPresetKey = await window.crypto.subtle.decrypt(
-                    { name: 'AES-CBC', iv: presetKey.slice(0, 16) }, 
-                    presetKey, 
-                    encryptedArray
-                );
-
-                // 使用用户输入的密钥解密
-                const decryptedUserKey = await window.crypto.subtle.decrypt(
-                    { name: 'AES-CBC', iv: presetKey.slice(0, 16) }, 
-                    decryptedPresetKey, 
-                    decryptedPresetKey
-                );
-
-                // 将解密后的结果显示在文本框中
-                const decryptedArray = new Uint8Array(decryptedUserKey);
-                const decryptedText = new TextDecoder().decode(decryptedArray);
-                document.getElementById('decryptedText').value = decryptedText;
-            } catch (error) {
-                console.error('解密失败:', error);
-            }
+        function decryptText() {
+            var encryptedText = document.getElementById('encryptedText').value;
+            var decrypted = CryptoJS.AES.decrypt(encryptedText, key, { mode: CryptoJS.mode.ECB });
+            var plaintext = decrypted.toString(CryptoJS.enc.Utf8);
+            document.getElementById('decryptedText').value = plaintext;
         }
     </script>
 </body>
