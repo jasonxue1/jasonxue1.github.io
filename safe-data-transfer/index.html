@@ -29,13 +29,16 @@
         function encryptText() {
             var plaintext = document.getElementById('inputText').value;
             var key = document.getElementById('encryptionKey').value;
-            
-            if (!key || key.length < 16) {
-                alert('请输入至少16位的密钥！');
+
+            if (!key) {
+                alert('请输入密钥！');
                 return;
             }
-            
-            var encrypted = CryptoJS.AES.encrypt(plaintext, key).toString();
+
+            // 使用 SHA-256 哈希函数将密钥转换为固定长度（16 字符）的密钥
+            var hashedKey = CryptoJS.SHA256(key).toString().substring(0, 16);
+
+            var encrypted = CryptoJS.AES.encrypt(plaintext, hashedKey).toString();
             document.getElementById('encryptedText').value = encrypted;
         }
 
@@ -43,13 +46,16 @@
             var encryptedText = document.getElementById('encryptedText').value;
             var key = document.getElementById('encryptionKey').value;
 
-            if (!key || key.length < 16) {
-                alert('请输入至少16位的密钥！');
+            if (!key) {
+                alert('请输入密钥！');
                 return;
             }
 
+            // 使用 SHA-256 哈希函数将密钥转换为固定长度（16 字符）的密钥
+            var hashedKey = CryptoJS.SHA256(key).toString().substring(0, 16);
+
             try {
-                var decrypted = CryptoJS.AES.decrypt(encryptedText, key).toString(CryptoJS.enc.Utf8);
+                var decrypted = CryptoJS.AES.decrypt(encryptedText, hashedKey).toString(CryptoJS.enc.Utf8);
                 document.getElementById('decryptedText').value = decrypted;
             } catch (error) {
                 alert('解密失败，请检查密文和密钥是否匹配！');
