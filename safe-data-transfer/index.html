@@ -10,19 +10,34 @@
 <body>
     <h1>AES 加密与解密</h1>
 
-    <label for="inputText">输入文本:</label>
-    <input type="text" id="inputText"><br><br>
+    <div style="display: flex; justify-content: space-around;">
+        <!-- 加密区域 -->
+        <div style="width: 45%;">
+            <h2>加密</h2>
+            <label for="inputText">输入要加密的文本:</label>
+            <input type="text" id="inputText" style="width: 100%;"><br><br>
+            <label for="encryptionKey">输入加密密钥:</label>
+            <input type="text" id="encryptionKey" style="width: 100%;"><br><br>
+            <button onclick="encryptText()">加密</button><br><br>
+            <p>加密结果:</p>
+            <textarea id="encryptedText" rows="4" cols="30" style="width: 100%;"></textarea>
+        </div>
 
-    <label for="encryptionKey">密钥:</label>
-    <input type="text" id="encryptionKey"><br><br>
-
-    <button onclick="encryptAndDecrypt()">加密 & 解密</button><br><br>
-
-    <p>加密解密结果:</p>
-    <textarea id="resultText" rows="4" cols="50"></textarea>
+        <!-- 解密区域 -->
+        <div style="width: 45%;">
+            <h2>解密</h2>
+            <label for="encryptedInput">输入要解密的文本:</label>
+            <input type="text" id="encryptedInput" style="width: 100%;"><br><br>
+            <label for="decryptionKey">输入解密密钥:</label>
+            <input type="text" id="decryptionKey" style="width: 100%;"><br><br>
+            <button onclick="decryptText()">解密</button><br><br>
+            <p>解密结果:</p>
+            <textarea id="decryptedText" rows="4" cols="30" style="width: 100%;"></textarea>
+        </div>
+    </div>
 
     <script>
-        function encryptAndDecrypt() {
+        function encryptText() {
             var plaintext = document.getElementById('inputText').value;
             var key = document.getElementById('encryptionKey').value;
 
@@ -32,36 +47,35 @@
             }
 
             if (!key) {
-                alert('请输入密钥！');
+                alert('请输入加密密钥！');
                 return;
             }
 
-            // 使用 SHA-256 哈希函数将密钥转换为固定长度（16 字符）的密钥
-            var hashedKey = CryptoJS.SHA256(key).toString().substring(0, 16);
+            var encrypted = CryptoJS.AES.encrypt(plaintext, key).toString();
+            document.getElementById('encryptedText').value = encrypted;
+        }
 
-            // 加密
-            var encrypted = CryptoJS.AES.encrypt(plaintext, hashedKey).toString();
+        function decryptText() {
+            var encryptedText = document.getElementById('encryptedInput').value;
+            var key = document.getElementById('decryptionKey').value;
 
-            // 解密
+            if (!encryptedText) {
+                alert('请输入要解密的文本！');
+                return;
+            }
+
+            if (!key) {
+                alert('请输入解密密钥！');
+                return;
+            }
+
             try {
-                var decrypted = CryptoJS.AES.decrypt(encrypted, hashedKey).toString(CryptoJS.enc.Utf8);
-
-                // 显示加密解密结果
-                var resultText = "加密结果: " + encrypted + "\n解密结果: " + decrypted;
-                document.getElementById('resultText').value = resultText;
-
-                // 以下是代码作者和来源的声明
-                console.log("此示例由 jasonxue1 使用 ChatGPT 编写。");
-                console.log("您可以在此处查看代码或保存至本地后离线运行。");
+                var decrypted = CryptoJS.AES.decrypt(encryptedText, key).toString(CryptoJS.enc.Utf8);
+                document.getElementById('decryptedText').value = decrypted;
             } catch (error) {
-                alert('加密解密过程中出现错误，请检查输入！');
+                alert('解密失败，请检查密文和密钥是否正确！');
             }
         }
     </script>
-
-    <!-- 仓库链接 -->
-    <p style="text-align: center;">
-        查看代码仓库：<a href="https://github.com/jasonxue1/jasonxue1.github.io/tree/main/safe-data-transfer" target="_blank">https://github.com/jasonxue1/jasonxue1.github.io/tree/main/safe-data-transfer</a>
-    </p>
 </body>
 </html>
