@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>获取VPN密文</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+</head>
+<body>
+    <h2>输入数据并加密</h2>
+    <form id="encryptionForm">
+        <label for="a1">Host:</label>
+        <input type="text" id="a1" name="a1"><br><br>
+        <label for="a2">Port:</label>
+        <input type="text" id="a2" name="a2"><br><br>
+        <label for="a3">Password:</label>
+        <input type="text" id="a3" name="a3"><br><br>
+        <label for="key">Key:</label>
+        <input type="text" id="key" name="key" maxlength="10"><br><br>
+        <button type="button" onclick="encryptData()">加密</button>
+    </form>
+    
+    <h2>密文</h2>
+    <div id="encryptedData"></div>
+
+    <script>
+        function encryptData() {
+            var a1 = document.getElementById("a1").value;
+            var a2 = document.getElementById("a2").value;
+            var a3 = document.getElementById("a3").value;
+            var key = document.getElementById("key").value;
+
+            // 格式化成字符串
+            var dataString = "服务器Host:" + a1 + "\n端口Port:" + a2 + "\n密码Password:" + a3;
+
+            // 使用 AES 算法加密
+            var encryptedData = CryptoJS.AES.encrypt(dataString, key).toString();
+
+            // 显示加密后的结果
+            document.getElementById("encryptedData").innerText = encryptedData;
+        }
+    </script>
+    
+    <!-- 仓库链接 -->
+    <p style="text-align: center;">
+        您可以在<a href="https://github.com/jasonxue1/jasonxue1.github.io/tree/main/safe-data-transfer">此处</a>查看代码或保存至本地后离线运行。
+        <br>
+        此程序由<a href="https://github.com/jasonxue1">jasonxue</a>使用<a href="https://openai.com/chatgpt">ChatGPT</a>编写。
+        <br><br><br>
+        <a href='..'>返回首页</a>
+    </p>
+</body>
+</html>
