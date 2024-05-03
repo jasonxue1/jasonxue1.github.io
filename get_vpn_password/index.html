@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AES Encryption Demo</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+</head>
+<body>
+    <h1>AES Encryption Demo</h1>
+    <p>Enter the password to decrypt the message:</p>
+    <input type="password" id="password">
+    <button onclick="decrypt()">Decrypt</button>
+    <div id="result"></div>
+
+    <script>
+        // Encrypted message stored in a variable
+        // 这里输入密文
+        var encryptedMessage = encryptedMessage || "U2FsdGVkX19LrkGzLk7FL7D710KHrW21Aq+baNJtUEg=";
+        
+        function decrypt() {
+            var password = document.getElementById('password').value;
+            // Decrypt message using AES algorithm and the password provided
+            var decrypted = CryptoJS.AES.decrypt(encryptedMessage, password);
+            try {
+                // Convert decrypted data to a string
+                var decryptedText = decrypted.toString(CryptoJS.enc.Utf8);
+                document.getElementById('result').innerText = "Decrypted Message: " + decryptedText;
+            } catch (error) {
+                document.getElementById('result').innerText = "Incorrect password or decryption error!";
+            }
+        }
+    </script>
+</body>
+</html>
