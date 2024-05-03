@@ -27,7 +27,7 @@
                 var decryptedText = decrypted.toString(CryptoJS.enc.Utf8);
                 document.getElementById('result').innerText = decryptedText;
             } catch (error) {
-                document.getElementById('result').innerText = "解密密钥错误!";
+                alert('解密密钥错误');
             }
         }
     </script>
