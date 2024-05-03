@@ -25,7 +25,7 @@
             try {
                 // Convert decrypted data to a string
                 var decryptedText = decrypted.toString(CryptoJS.enc.Utf8);
-                document.getElementById('result').innerText = "获取到的VPN密码:\n " + decryptedText;
+                document.getElementById('result').innerText = decryptedText;
             } catch (error) {
                 document.getElementById('result').innerText = "解密密钥错误!";
             }
