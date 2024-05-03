@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AES Encryption Demo</title>
+    <title>获取VPN密码</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
 </head>
 <body>
-    <h1>AES Encryption Demo</h1>
-    <p>Enter the password to decrypt the message:</p>
+    <h1>获取VPN密码</h1>
+    <p>输入解密密码:</p>
     <input type="password" id="password">
-    <button onclick="decrypt()">Decrypt</button>
+    <button onclick="decrypt()">获取</button>
     <div id="result"></div>
 
     <script>
@@ -25,9 +25,9 @@
             try {
                 // Convert decrypted data to a string
                 var decryptedText = decrypted.toString(CryptoJS.enc.Utf8);
-                document.getElementById('result').innerText = "Decrypted Message: " + decryptedText;
+                document.getElementById('result').innerText = "获取到的VPN密码:\n " + decryptedText;
             } catch (error) {
-                document.getElementById('result').innerText = "Incorrect password or decryption error!";
+                document.getElementById('result').innerText = "解密密码错误!";
             }
         }
     </script>
