@@ -42,12 +42,12 @@
             var key = document.getElementById('encryptionKey').value;
 
             if (!plaintext) {
-                alert('请输入要加密的文本！');
+                alert('请输入要加密的文本!');
                 return;
             }
 
             if (!key) {
-                alert('请输入加密密钥！');
+                alert('请输入加密密钥!');
                 return;
             }
 
@@ -60,12 +60,12 @@
             var key = document.getElementById('decryptionKey').value;
 
             if (!encryptedText) {
-                alert('请输入要解密的文本！');
+                alert('请输入要解密的文本!');
                 return;
             }
 
             if (!key) {
-                alert('请输入解密密钥！');
+                alert('请输入解密密钥!');
                 return;
             }
 
@@ -73,7 +73,7 @@
                 var decrypted = CryptoJS.AES.decrypt(encryptedText, key).toString(CryptoJS.enc.Utf8);
                 document.getElementById('decryptedText').value = decrypted;
             } catch (error) {
-                alert('解密失败，请检查密文和密钥是否正确！');
+                alert('解密失败，请检查密文和密钥是否正确!');
             }
         }
     </script>
