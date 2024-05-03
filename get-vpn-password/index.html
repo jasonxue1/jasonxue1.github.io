@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>获取VPN密码</h1>
-    <p>输入解密密码:</p>
+    <p>输入解密密钥:</p>
     <input type="password" id="password">
     <button onclick="decrypt()">获取</button>
     <div id="result"></div>
@@ -27,7 +27,7 @@
                 var decryptedText = decrypted.toString(CryptoJS.enc.Utf8);
                 document.getElementById('result').innerText = "获取到的VPN密码:\n " + decryptedText;
             } catch (error) {
-                document.getElementById('result').innerText = "解密密码错误!";
+                document.getElementById('result').innerText = "解密密钥错误!";
             }
         }
     </script>
